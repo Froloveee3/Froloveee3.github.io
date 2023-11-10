@@ -8,12 +8,22 @@
     <title>WebApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        function sendAndClose() {
+      function sendAndClose() {
+        try {
             const user = Telegram.WebApp.initDataUnsafe.user;
-
             Telegram.WebApp.sendData(`Пользователь ${user.username} нажал на кнопку`);
-            // Telegram.WebApp.close();
+        } catch (error) {
+            // Отобразите ошибку на странице, если что-то пошло не так
+            document.body.innerHTML += `<p>Error: ${error.message}</p>`;
         }
+      }
+
+        // function sendAndClose() {
+        //     const user = Telegram.WebApp.initDataUnsafe.user;
+
+        //     Telegram.WebApp.sendData(`Пользователь ${user.username} нажал на кнопку`);
+        //     // Telegram.WebApp.close();
+        // }
     </script>
 </head>
 <body>
