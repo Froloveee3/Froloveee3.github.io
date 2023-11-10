@@ -14,6 +14,7 @@
 
         const data = { hex: 1, rgb: 2 };
         window.Telegram.WebApp.close(JSON.stringify(data));
+        
 
         // const jsonData = JSON.stringify(data);
 
@@ -85,10 +86,27 @@
           
           // Telegram.WebApp.close();
         }
+
+        // Функция для создания глубинной ссылки
+        function createDeepLink() {
+            const command = "/command"; // Замените на вашу команду
+            const data = { hex: 1, rgb: 2 };
+            const params = `hex=${data.hex}&rgb=${data.rgb}`;
+            return `https://t.me/character_ai_froloveee3_bot?value=${encodeURIComponent(command + ' ' + params)}`;
+        }
+
+
     </script>
 </head>
 <body>
 <h1>Hello!</h1>
-<button id="btn" onclick="sendAndClose()">Click me</button>
+<a id="deepLink" href="#">Отправить данные в бота</a>
+
+<!-- <button id="btn" onclick="sendAndClose()">Click me</button> -->
 </body>
+<script>        
+  // При загрузке страницы устанавливаем href для ссылки
+  window.onload = function() {
+      document.getElementById('deepLink').href = createDeepLink();
+  }</script>
 </html>
