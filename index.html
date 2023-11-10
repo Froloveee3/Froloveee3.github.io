@@ -12,7 +12,19 @@
           const user = Telegram.WebApp.initDataUnsafe.user;
           const data = JSON.stringify({hex: 1, rgb: 2});
 
-          Telegram.WebApp.sendData(data);
+          const url = `https://api.telegram.org/bot<6867492650:AAFgcAXUrC2gKADq_WLlfievep75TYp0mOI>/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodeURIComponent(JSON.stringify(data))}`;
+
+          fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                  console.log('Success:', data);
+                  Telegram.WebApp.close();
+              })
+              .catch((error) => {
+                  console.error('Error:', error);
+              });
+          
+          // Telegram.WebApp.sendData(data);
           // Telegram.WebApp.close();
         }
     </script>
