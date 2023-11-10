@@ -15,20 +15,21 @@
           const queryId = Telegram.WebApp.initDataUnsafe.query_id;
           const url = `https://api.telegram.org/bot<6867492650:AAFgcAXUrC2gKADq_WLlfievep75TYp0mOI>/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodeURIComponent(JSON.stringify(data))}`;
 
-          fetch(url)
-              .then(response => response.json())
-              .then(data => {
-                  console.log('Success:', data);
-                  Telegram.WebApp.close();
-              })
-              .catch((error) => {
-                  document.body.innerHTML += `<p>${error}</p>`;
-                  console.error('Error:', error);
-              });
-              
+          // fetch(url)
+          //     .then(response => response.json())
+          //     .then(data => {
+          //         console.log('Success:', data);
+                  
+          //         Telegram.WebApp.close();
+          //     })
+          //     .catch((error) => {
+          //         document.body.innerHTML += `<p>${error}</p>`;
+          //         console.error('Error:', error);
+          //     });
+
           document.body.innerHTML += `<p>${data}</p>`;
           
-          // Telegram.WebApp.sendData(data);
+          Telegram.WebApp.sendData(data);
           // Telegram.WebApp.close();
         }
     </script>
