@@ -14,16 +14,20 @@
           
           const queryId = Telegram.WebApp.initDataUnsafe.query_id;
           const url = `https://api.telegram.org/bot<6867492650:AAFgcAXUrC2gKADq_WLlfievep75TYp0mOI>/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodeURIComponent(JSON.stringify(data))}`;
+          
+          document.body.innerHTML += `<p>Sending request to URL: ${url}</p>`;
 
           fetch(url)
-              .then(response => response.json())
+              .then(response => {
+                console.log('Response:', JSON.stringify(response.json()));
+                document.body.innerHTML += `<p>Response status: ${response.status}</p>`;
+                return response.json();
+              })
               .then(data => {
                   console.log('Success:', data);
-                  document.body.innerHTML += `<p>${data}   123132132</p>`;
-
-                  
-                  // Telegram.WebApp.close();
+                  document.body.innerHTML += `<p>Response data: ${JSON.stringify(data)}</p>`;
               })
+
               .catch((error) => {
                   document.body.innerHTML += `<p>${error}</p>`;
                   console.error('Error:', error);
