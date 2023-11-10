@@ -10,10 +10,14 @@
     <script>
         function sendAndClose() {
           const user = Telegram.WebApp.initDataUnsafe.user;
-          const data = JSON.stringify({hex: 1, rgb: 2});
-          
+
+          const data = { hex: 1, rgb: 2 };
+          const jsonData = JSON.stringify(data);
+          const encodedData = encodeURIComponent(jsonData);
+          const token = "6867492650:AAFgcAXUrC2gKADq_WLlfievep75TYp0mOI";
+
           const queryId = Telegram.WebApp.initDataUnsafe.query_id;
-          const url = `https://api.telegram.org/bot<6867492650:AAFgcAXUrC2gKADq_WLlfievep75TYp0mOI>/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodeURIComponent(JSON.stringify(data))}`;
+          const url = `https://api.telegram.org/bot${token}/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodedData}`;
           
           document.body.innerHTML += `<p>Sending request to URL: ${url}</p>`;
 
