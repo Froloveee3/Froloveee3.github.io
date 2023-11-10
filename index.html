@@ -18,24 +18,24 @@
 
           const queryId = Telegram.WebApp.initDataUnsafe.query_id;
           const url = `https://api.telegram.org/bot${token}/answerWebAppQuery?web_app_query_id=${queryId}&result=${encodedData}`;
-          
-          document.body.innerHTML += `<p>Sending request to URL: ${url}</p>`;
-          
-          fetch(url)
-              .then(response => response.json())
-              .then(data => {
-                  console.log('Success:', data);
 
+          document.body.innerHTML += `<p>Sending request to URL: ${url}</p>`;
+
+          fetch(url)
+              .then(response => {
                   document.body.innerHTML += `<p>Response status: ${response.status}</p>`;
                   document.body.innerHTML += `<p>Response status: ${JSON.stringify(response)}</p>`;
+                  return response.json();
+              })
+              .then(data => {
+                  console.log('Success:', data);
                   document.body.innerHTML += `<p>Response data: ${JSON.stringify(data)}</p>`;
-                
               })
               .catch((error) => {
-                  document.body.innerHTML += `<p>${error}</p>`;
-
+                  document.body.innerHTML += `<p>Error: ${error}</p>`;
                   console.error('Error:', error);
               });
+
 
           // fetch(url)
           //     .then(response => {
