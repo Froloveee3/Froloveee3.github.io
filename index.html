@@ -19,8 +19,9 @@
 
           fetch(url)
               .then(response => {
-                console.log('Response:', JSON.stringify(response));
+                console.log('Response:', response);
                 document.body.innerHTML += `<p>Response status: ${response.status}</p>`;
+                document.body.innerHTML += `<p>Response status: ${JSON.stringify(response)}</p>`;
                 return response.json();
               })
               .then(data => {
