@@ -10,8 +10,9 @@
     <script>
         function sendAndClose() {
           const user = Telegram.WebApp.initDataUnsafe.user;
+          const data = JSON.stringify({hex: 1, rgb: 2});
 
-          Telegram.WebApp.sendData(`Пользователь ${user.username} нажал на кнопку`);
+          Telegram.WebApp.sendData(data);
           // Telegram.WebApp.close();
         }
     </script>
