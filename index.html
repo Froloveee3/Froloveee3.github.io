@@ -22,6 +22,7 @@
                   Telegram.WebApp.close();
               })
               .catch((error) => {
+                  document.body.innerHTML += `<p>${error}</p>`;
                   console.error('Error:', error);
               });
           
