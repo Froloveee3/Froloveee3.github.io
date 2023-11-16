@@ -66,7 +66,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>=</td>
-                    <td>${rate}</td>
+                    <td><input type="number" value="${rate}" step="0.01" style="width: 100%;"></td>
                     <td>${targetCurrency}</td>
                 `;
                 ratesTable.appendChild(row);
@@ -75,13 +75,13 @@
             // Итерация по курсам валют и добавление их в таблицу
             Object.keys(rates).forEach(currency => {
                 const currencyRates = rates[currency];
-                // Добавляем первую строку с rowspan
+                // Добавляем первую строку с rowspan и редактируемым полем
                 const firstRate = currencyRates[0];
                 const firstRow = document.createElement('tr');
                 firstRow.innerHTML = `
                     <td rowspan="${currencyRates.length}">${currency}</td>
                     <td>=</td>
-                    <td>${firstRate[0]}</td>
+                    <td><input type="number" value="${firstRate[0]}" step="0.01" style="width: 100%;"></td>
                     <td>${firstRate[1]}</td>
                 `;
                 ratesTable.appendChild(firstRow);
