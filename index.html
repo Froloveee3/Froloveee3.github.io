@@ -7,16 +7,18 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            text-align: center;
         }
         table, th, td {
             border: 1px solid black;
-        }
-        th, td {
-            padding: 5px;
-            text-align: left;
+            padding: 8px;
         }
         th {
             background-color: #f2f2f2;
+        }
+        #header {
+            font-weight: bold;
+            text-align: center;
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -24,30 +26,32 @@
 <body>
     <h2>Стамбул</h2>
     <table>
-        <tr><th>EUR</th><td>EUR = 0.0 TL</td></tr>
-        <tr><td></td><td>EUR = 0.0 TL cash</td></tr>
-        <tr><td></td><td>EUR = 0.0 USD</td></tr>
-        <tr><td></td><td>EUR = 1.0625 USDT</td></tr>
-        
-        <tr><th>TL</th><td>TL = 0.0 EUR</td></tr>
-        <tr><td></td><td>TL = 0.0 TL cash</td></tr>
-        <tr><td></td><td>TL = 0.0 USD</td></tr>
-        <tr><td></td><td>TL = 0.0369 USDT</td></tr>
-        
-        <tr><th>TL cash</th><td>TL cash = 0.0 EUR</td></tr>
-        <tr><td></td><td>TL cash = 0.0 TL</td></tr>
-        <tr><td></td><td>TL cash = 0.0 USD</td></tr>
-        <tr><td></td><td>TL cash = 0.0 USDT</td></tr>
-        
-        <tr><th>USD</th><td>USD = 0.0 EUR</td></tr>
-        <tr><td></td><td>USD = 0.0 TL</td></tr>
-        <tr><td></td><td>USD = 0.0 TL cash</td></tr>
-        <tr><td></td><td>USD = 0.984 USDT</td></tr>
-        
-        <tr><th>USDT</th><td>USDT = 0.9242 EUR</td></tr>
-        <tr><td></td><td>USDT = 26.6 TL</td></tr>
-        <tr><td></td><td>USDT = 26.4 TL cash</td></tr>
-        <tr><td></td><td>USDT = 1.0 USD</td></tr>
+        <tr id="header">
+            <th colspan="2">СТАМБУЛ</th>
+            <th>RATE</th>
+            <th>END</th>
+        </tr>
+        <tr>
+            <td rowspan="4">START</td>
+            <td>EUR</td>
+            <td>=</td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>0.97</td>
+            <td>RUB</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>110.1</td>
+            <td>TL</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>31.2</td>
+            <td>USD</td>
+        </tr>
     </table>
     <button id="closeButton">Нажми на меня</button>
     <div id="debug"></div>
