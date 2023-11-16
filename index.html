@@ -61,7 +61,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>=</td>
-                    <td><input type="number" value="${rate}" step="0.01" required style="width: 100%;" class="rate-input"></td>
+                    <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
                     <td>${targetCurrency}</td>
                 `;
                 ratesTable.appendChild(row);
@@ -85,25 +85,23 @@
                 }
             });
 
-            function checkInputs() {
+            function updateButtonState() {
                 const inputs = document.querySelectorAll('.rate-input');
-                const closeButton = document.getElementById('closeButton');
-                let allFilled = true;
-
-                inputs.forEach(function(input) {
-                    if (input.value === '') {
-                        allFilled = false;
-                    }
-                });
-
-                closeButton.disabled = !allFilled;
+                const button = document.getElementById('closeButton');
+                // Проверяем, что все поля ввода заполнены
+                const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+                button.disabled = !allFilled;
             }
 
-            document.querySelectorAll('.rate-input').forEach(function(input) {
-                input.addEventListener('input', checkInputs);
+            // Добавление обработчиков событий на поля ввода
+            const rateInputs = document.querySelectorAll('.rate-input');
+            rateInputs.forEach(input => {
+                // Проверяем состояние кнопки при каждом изменении в поле ввода
+                input.addEventListener('input', updateButtonState);
             });
 
-            checkInputs();
+            // Первоначальное обновление состояния кнопки
+            updateButtonState();
         });
 
         
