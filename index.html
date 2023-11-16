@@ -24,32 +24,35 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h2>Стамбул</h2>
     <table>
         <tr id="header">
-            <th colspan="2">СТАМБУЛ</th>
+            <th colspan="4">СТАМБУЛ</th>
+        </tr>
+        <tr>
+            <th>START</th>
+            <th></th>
             <th>RATE</th>
             <th>END</th>
         </tr>
         <tr>
-            <td rowspan="4">START</td>
-            <td>EUR</td>
+            <td rowspan="4">EUR</td>
             <td>=</td>
+            <td>0.99</td>
             <td>USD</td>
         </tr>
         <tr>
-            <td>EUR</td>
-            <td>0.97</td>
-            <td>RUB</td>
+            <td>=</td>
+            <td>0.99</td>
+            <td>USD</td>
         </tr>
         <tr>
-            <td>EUR</td>
-            <td>110.1</td>
-            <td>TL</td>
+            <td>=</td>
+            <td>0.99</td>
+            <td>USD</td>
         </tr>
         <tr>
-            <td>EUR</td>
-            <td>31.2</td>
+            <td>=</td>
+            <td>0.99</td>
             <td>USD</td>
         </tr>
     </table>
@@ -60,7 +63,18 @@
         if (window.Telegram.WebApp) {
           Telegram.WebApp.ready();
         }
-      
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Парсинг параметров URL
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Получение данных, переданных из Python
+            const userId = urlParams.get('user_id');
+
+            // Теперь вы можете использовать эти данные в вашем WebApp
+            document.getElementById('debug').textContent += userId;
+        });
+        
         document.getElementById('closeButton').addEventListener('click', function() {
             // Создаём объект для отправки с типом 'article'
             const result = {
