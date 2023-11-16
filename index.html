@@ -30,20 +30,18 @@
             text-align: left;
         }
         td input.rate-input {
-            width: 70%; /* Уменьшенная ширина */
+            width: 100%; /* Изменено на 100%, чтобы вписаться в ячейку */
             padding: 8px;
-            margin: 0 auto;
-            display: block;
-            border: 1px solid #ddd; /* Светлая обводка */
-            border-radius: 4px; /* Слегка скругленные углы */
-            box-shadow: none; /* Отсутствие тени */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Убедитесь, что padding и border включены в ширину */
             font-size: 14px;
         }
         #closeButton {
             display: block;
             padding: 10px 20px;
             margin-top: 20px;
-            background-color: #555; /* Темная кнопка */
+            background-color: #555;
             color: white;
             border: none;
             border-radius: 4px;
@@ -62,6 +60,7 @@
             font-size: 14px;
         }
     </style>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -116,7 +115,7 @@
                 firstRow.innerHTML = `
                     <td rowspan="${currencyRates.length}">${currency}</td>
                     <td>=</td>
-                    <td><input type="number" value="${firstRate[0]}" step="0.01" style="width: 100%;"></td>
+                    <td><input type="number" value="${firstRate[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
                     <td>${firstRate[1]}</td>
                 `;
                 ratesTable.appendChild(firstRow);
