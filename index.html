@@ -10,6 +10,7 @@
             background-color: #f8f8f8;
             margin: 0;
             padding: 20px;
+            text-align: center; /* Выравнивание по центру для всего содержимого body */
         }
         table {
             width: 100%;
@@ -17,6 +18,8 @@
             margin-top: 20px;
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: auto; /* Автоматические отступы для горизонтального центрирования таблицы */
+            margin-right: auto;
         }
         th, td {
             padding: 12px 15px;
@@ -26,19 +29,20 @@
         th {
             background-color: #f2f2f2;
             color: #333;
-            font-weight: bold;
-            text-align: left;
+            text-align: center; /* Выравнивание текста заголовков по центру */
         }
         td input.rate-input {
-            width: 100%; /* Изменено на 100%, чтобы вписаться в ячейку */
+            width: 70%; /* Меньшая ширина для полей ввода */
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-sizing: border-box; /* Убедитесь, что padding и border включены в ширину */
+            box-sizing: border-box;
             font-size: 14px;
+            display: block;
+            margin: 0 auto; /* Центрирование поля ввода внутри ячейки */
         }
         #closeButton {
-            display: block;
+            display: inline-block; /* Заменено на inline-block для центрирования */
             padding: 10px 20px;
             margin-top: 20px;
             background-color: #555;
@@ -47,17 +51,6 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-        }
-        #closeButton:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        #debug {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #eaeaea;
-            border-radius: 4px;
-            font-size: 14px;
         }
     </style>
     
@@ -69,15 +62,14 @@
             <th colspan="4">Заголовок таблицы</th>
         </tr>
         <tr>
-            <th>START</th>
+            <th>Продажа</th>
             <th></th>
-            <th>RATE</th>
-            <th>END</th>
+            <th>Котировки</th>
+            <th>Покупка</th>
         </tr>
     </table>
 
-    <button id="closeButton">Нажми на меня</button>
-    <div id="debug"></div>
+    <button id="closeButton" disabled>Подтвердить</button>
 
     <script>
         if (window.Telegram.WebApp) {
