@@ -13,9 +13,8 @@
           // Инициализация WebApp, чтобы получить данные текущего пользователя
           Telegram.WebApp.ready();
       
-          // Получаем данные из WebApp для последующего использования (если это необходимо)
-          const initData = Telegram.WebApp.initData; // или Telegram.WebApp.initDataUnsafe если вам нужны данные пользователя
-          const tgUser = Telegram.WebApp.initDataUnsafe?.user;
+          // Отправка отладочного сообщения обратно в бота
+          Telegram.WebApp.sendData("WebApp ready");
         }
       
         document.getElementById('closeButton').addEventListener('click', function() {
@@ -24,12 +23,13 @@
             Telegram.WebApp.sendData(message);
           }
       
-          // Вызов функции отправки сообщения обратно в бота
-          sendMessageToBot("close");
+          // Отправка отладочного сообщения обратно в бота перед попыткой закрыть WebApp
+          sendMessageToBot("Button clicked, attempting to close WebApp");
       
           // Закрытие WebApp после выполнения операции
           Telegram.WebApp.close();
         });
       </script>
+      
 </body>
 </html>
