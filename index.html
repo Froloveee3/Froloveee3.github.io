@@ -7,21 +7,31 @@
 </head>
 <body>
     <button id="closeButton">Нажми на меня</button>
+    <div id="debug"></div> <!-- Элемент для вывода отладочных сообщений -->
 
     <script>
+        // Функция для вывода сообщений в элемент debug
+        function debugMessage(message) {
+            var debugElement = document.getElementById('debug');
+            debugElement.textContent += message + '\n'; // Добавление сообщения в debugElement
+        }
+
         // Проверка, что ваша веб-страница загружена внутри Telegram WebApp
         if (window.Telegram.WebApp) {
           // Инициализация WebApp, чтобы получить данные текущего пользователя
           Telegram.WebApp.ready();
       
-          // Отправка отладочного сообщения обратно в бота
-          Telegram.WebApp.sendData("WebApp ready");
+          // Вывод отладочного сообщения на страницу
+          debugMessage("WebApp is ready.");
+        } else {
+          debugMessage("This is not running inside the Telegram WebApp environment.");
         }
       
         document.getElementById('closeButton').addEventListener('click', function() {
           // Функция для отправки сообщения обратно в бота
           function sendMessageToBot(message) {
             Telegram.WebApp.sendData(message);
+            debugMessage("Sent message to bot: " + message); // Выводим информацию о том, что сообщение отправлено
           }
       
           // Отправка отладочного сообщения обратно в бота перед попыткой закрыть WebApp
@@ -30,7 +40,6 @@
           // Закрытие WebApp после выполнения операции
           Telegram.WebApp.close();
         });
-      </script>
-      
+    </script>
 </body>
 </html>
