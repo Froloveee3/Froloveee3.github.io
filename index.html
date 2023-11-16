@@ -4,21 +4,62 @@
     <meta charset="UTF-8">
     <title>WebApp</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: center;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 14px;
         }
         th {
             background-color: #f2f2f2;
-        }
-        #header {
+            color: #333;
             font-weight: bold;
-            text-align: center;
+            text-align: left;
+        }
+        td input.rate-input {
+            width: 70%; /* Уменьшенная ширина */
+            padding: 8px;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid #ddd; /* Светлая обводка */
+            border-radius: 4px; /* Слегка скругленные углы */
+            box-shadow: none; /* Отсутствие тени */
+            font-size: 14px;
+        }
+        #closeButton {
+            display: block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #555; /* Темная кнопка */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #closeButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #debug {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #eaeaea;
+            border-radius: 4px;
+            font-size: 14px;
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
