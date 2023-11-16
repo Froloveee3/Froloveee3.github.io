@@ -68,11 +68,11 @@
             // Парсинг параметров URL
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Получение данных, переданных из Python
-            const userId = urlParams.get('user_id');
+            const jsonData = urlParams.get('data');
+            const data = JSON.parse(decodeURIComponent(jsonData));
 
             // Теперь вы можете использовать эти данные в вашем WebApp
-            document.getElementById('debug').textContent += userId;
+            document.getElementById('debug').textContent += data;
         });
         
         document.getElementById('closeButton').addEventListener('click', function() {
