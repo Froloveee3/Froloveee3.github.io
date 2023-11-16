@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>WebApp</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+    <h2>Стамбул</h2>
+    <table>
+        <tr><th>EUR</th><td>EUR = 0.0 TL</td></tr>
+        <tr><td></td><td>EUR = 0.0 TL cash</td></tr>
+        <tr><td></td><td>EUR = 0.0 USD</td></tr>
+        <tr><td></td><td>EUR = 1.0625 USDT</td></tr>
+        
+        <tr><th>TL</th><td>TL = 0.0 EUR</td></tr>
+        <tr><td></td><td>TL = 0.0 TL cash</td></tr>
+        <tr><td></td><td>TL = 0.0 USD</td></tr>
+        <tr><td></td><td>TL = 0.0369 USDT</td></tr>
+        
+        <tr><th>TL cash</th><td>TL cash = 0.0 EUR</td></tr>
+        <tr><td></td><td>TL cash = 0.0 TL</td></tr>
+        <tr><td></td><td>TL cash = 0.0 USD</td></tr>
+        <tr><td></td><td>TL cash = 0.0 USDT</td></tr>
+        
+        <tr><th>USD</th><td>USD = 0.0 EUR</td></tr>
+        <tr><td></td><td>USD = 0.0 TL</td></tr>
+        <tr><td></td><td>USD = 0.0 TL cash</td></tr>
+        <tr><td></td><td>USD = 0.984 USDT</td></tr>
+        
+        <tr><th>USDT</th><td>USDT = 0.9242 EUR</td></tr>
+        <tr><td></td><td>USDT = 26.6 TL</td></tr>
+        <tr><td></td><td>USDT = 26.4 TL cash</td></tr>
+        <tr><td></td><td>USDT = 1.0 USD</td></tr>
+    </table>
     <button id="closeButton">Нажми на меня</button>
     <div id="debug"></div>
 
