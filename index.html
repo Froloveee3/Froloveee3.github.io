@@ -45,39 +45,33 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Парсинг URL параметров
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Расшифровка JSON строки из параметров URL
             const jsonData = urlParams.get('data');
             const data = JSON.parse(decodeURIComponent(jsonData));
 
-            // Заполнение таблицы данными
             const ratesTable = document.getElementById('rates_table');
-            const city = data.city; // Стамбул
-            const rates = data.rates; // Словарь с курсами валют
+            const city = data.city;
+            const rates = data.rates;
 
-            // Обновляем заголовок таблицы с названием города
             const header = ratesTable.querySelector('#header th');
             header.textContent = city;
 
-            // Функция для добавления строки в таблицу
             function addRateRow(currency, rate, targetCurrency) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>=</td>
-                    <td><input type="number" value="${rate}" step="0.01" style="width: 100%;"></td>
+                    <td><input type="number" value="${rate}" step="0.01" required style="width: 100%;" class="rate-input"></td>
                     <td>${targetCurrency}</td>
                 `;
                 ratesTable.appendChild(row);
             }
 
-            // Итерация по курсам валют и добавление их в таблицу
             Object.keys(rates).forEach(currency => {
                 const currencyRates = rates[currency];
-                // Добавляем первую строку с rowspan и редактируемым полем
                 const firstRate = currencyRates[0];
                 const firstRow = document.createElement('tr');
+
                 firstRow.innerHTML = `
                     <td rowspan="${currencyRates.length}">${currency}</td>
                     <td>=</td>
@@ -86,11 +80,30 @@
                 `;
                 ratesTable.appendChild(firstRow);
 
-                // Добавляем оставшиеся строки без первой колонки
                 for (let i = 1; i < currencyRates.length; i++) {
                     addRateRow(currency, currencyRates[i][0], currencyRates[i][1]);
                 }
             });
+
+            function checkInputs() {
+                const inputs = document.querySelectorAll('.rate-input');
+                const closeButton = document.getElementById('closeButton');
+                let allFilled = true;
+
+                inputs.forEach(function(input) {
+                    if (input.value === '') {
+                        allFilled = false;
+                    }
+                });
+
+                closeButton.disabled = !allFilled;
+            }
+
+            document.querySelectorAll('.rate-input').forEach(function(input) {
+                input.addEventListener('input', checkInputs);
+            });
+
+            checkInputs();
         });
 
         
