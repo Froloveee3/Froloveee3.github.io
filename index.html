@@ -24,9 +24,9 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <table>
+    <table id="rates_table">
         <tr id="header">
-            <th colspan="4">СТАМБУЛ</th>
+            <th colspan="4">Заголовок таблицы</th>
         </tr>
         <tr>
             <th>START</th>
@@ -34,28 +34,8 @@
             <th>RATE</th>
             <th>END</th>
         </tr>
-        <tr>
-            <td rowspan="4">EUR</td>
-            <td>=</td>
-            <td>0.99</td>
-            <td>USD</td>
-        </tr>
-        <tr>
-            <td>=</td>
-            <td>0.99</td>
-            <td>USD</td>
-        </tr>
-        <tr>
-            <td>=</td>
-            <td>0.99</td>
-            <td>USD</td>
-        </tr>
-        <tr>
-            <td>=</td>
-            <td>0.99</td>
-            <td>USD</td>
-        </tr>
     </table>
+
     <button id="closeButton">Нажми на меня</button>
     <div id="debug"></div>
 
@@ -65,15 +45,54 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Парсинг параметров URL
+            // Парсинг URL параметров
             const urlParams = new URLSearchParams(window.location.search);
             
+            // Расшифровка JSON строки из параметров URL
             const jsonData = urlParams.get('data');
             const data = JSON.parse(decodeURIComponent(jsonData));
 
-            // Теперь вы можете использовать эти данные в вашем WebApp
-            document.getElementById('debug').textContent += data;
+            // Заполнение таблицы данными
+            const ratesTable = document.getElementById('rates_table');
+            const city = data.city; // Стамбул
+            const rates = data.rates; // Словарь с курсами валют
+
+            // Обновляем заголовок таблицы с названием города
+            const header = ratesTable.querySelector('#header th');
+            header.textContent = city;
+
+            // Функция для добавления строки в таблицу
+            function addRateRow(currency, rate, targetCurrency) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>=</td>
+                    <td>${rate}</td>
+                    <td>${targetCurrency}</td>
+                `;
+                ratesTable.appendChild(row);
+            }
+
+            // Итерация по курсам валют и добавление их в таблицу
+            Object.keys(rates).forEach(currency => {
+                const currencyRates = rates[currency];
+                // Добавляем первую строку с rowspan
+                const firstRate = currencyRates[0];
+                const firstRow = document.createElement('tr');
+                firstRow.innerHTML = `
+                    <td rowspan="${currencyRates.length}">${currency}</td>
+                    <td>=</td>
+                    <td>${firstRate[0]}</td>
+                    <td>${firstRate[1]}</td>
+                `;
+                ratesTable.appendChild(firstRow);
+
+                // Добавляем оставшиеся строки без первой колонки
+                for (let i = 1; i < currencyRates.length; i++) {
+                    addRateRow(currency, currencyRates[i][0], currencyRates[i][1]);
+                }
+            });
         });
+
         
         document.getElementById('closeButton').addEventListener('click', function() {
             // Создаём объект для отправки с типом 'article'
