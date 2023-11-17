@@ -154,8 +154,13 @@
                     const row = document.createElement('tr');
                     
                     row.innerHTML = `
-                        <td>${currency}</td>
+                        <td contenteditable="true">${currency}</td>
+                        <td><button class="delete-btn"><i class="fa fa-trash"></i></button></td>
                     `;
+
+                    row.querySelector('.delete-btn').addEventListener('click', function() {
+                        this.closest('tr').remove();
+                    });
 
                     ratesTable.appendChild(row);
                 });
