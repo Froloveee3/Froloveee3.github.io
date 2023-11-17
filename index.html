@@ -183,46 +183,46 @@
 
         function collectTableData() {
             const ratesTable = document.getElementById('rates_table');
-            // Заголовок таблицы берется из первой строки после шапки столбцов
-            const city = ratesTable.querySelector('tr#header th').textContent;
+            const headerText = ratesTable.querySelector('#headerText').textContent;
             const data = {
-                city: city, // Установка city в значение из заголовка таблицы
+                city: headerText, // Используем текст из заголовка таблицы
                 rates: {}
             };
 
-            let currentCurrency = null; // Переменная для хранения текущей валюты
-            let currentRowSpan = 0; // Счетчик для отслеживания строки с объединенной ячейкой
+            let currentCurrency = null;
+            let currentRowSpan = 0;
 
-            // Пропускаем первые две строки - шапку таблицы
+            // Получаем все строки таблицы за исключением заголовка и шапки столбцов
             const rateRows = ratesTable.querySelectorAll('tr:not(:first-child):not(:nth-child(2))');
 
             rateRows.forEach(row => {
-                if (currentRowSpan === 0) {
-                    // Получаем валюту продажи, если она есть в строке, и устанавливаем rowspan
-                    const currencyCell = row.cells[0];
-                    if (currencyCell.hasAttribute('rowspan')) {
-                        currentCurrency = currencyCell.textContent;
-                        currentRowSpan = parseInt(currencyCell.getAttribute('rowspan'), 10);
-                        data.rates[currentCurrency] = []; // Инициализация массива для валюты
-                    }
+                // Проверяем текущий счетчик rowspan
+                if (currentRowSpan > 0) {
+                    currentRowSpan--;
                 } else {
-                    currentRowSpan--; // Уменьшаем счетчик rowspan
+                    // Если в текущей строке есть ячейка с валютой
+                    const currencyCell = row.querySelector('td[rowspan]');
+                    if (currencyCell) {
+                        currentCurrency = currencyCell.textContent;
+                        currentRowSpan = parseInt(currencyCell.getAttribute('rowspan'), 10) - 1;
+                        data.rates[currentCurrency] = [];
+                    }
                 }
 
-                // Получаем данные курсов валют из полей ввода
+                // Проверяем наличие input, что означает наличие данных о курсе
                 const rateInput = row.querySelector('input.rate-input');
-                const rateValue = rateInput ? parseFloat(rateInput.value) : null;
-                const targetCurrency = row.cells[row.cells.length - 1].textContent;
+                if (rateInput) {
+                    const rateValue = parseFloat(rateInput.value);
+                    const targetCurrency = row.cells[row.cells.length - 1].textContent;
 
-                // Добавляем информацию о курсе в data
-                if (rateValue && targetCurrency) {
-                    data.rates[currentCurrency].push([rateValue, targetCurrency]);
+                    if (!isNaN(rateValue) && targetCurrency && currentCurrency) {
+                        data.rates[currentCurrency].push([rateValue, targetCurrency]);
+                    }
                 }
             });
 
             return data;
         }
-
 
         document.getElementById('closeButton').addEventListener('click', function() {
             const data = collectTableData();
