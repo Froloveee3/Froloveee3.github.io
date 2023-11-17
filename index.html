@@ -176,6 +176,27 @@
 
                     ratesTable.appendChild(row);
                 });
+
+                // Кнопка для добавления новой строки в таблицу
+                const addButton = document.createElement('button');
+                addButton.textContent = 'Добавить строку';
+                addButton.addEventListener('click', () => {
+                    const newRow = document.createElement('tr');
+                    
+                    newRow.innerHTML = `
+                        <td contenteditable="true">Новая валюта</td>
+                        <td><button class="delete-btn">&#128465;</button></td>
+                    `;
+
+                    newRow.querySelector('.delete-btn').addEventListener('click', function() {
+                        this.closest('tr').remove();
+                    });
+
+                    ratesTable.appendChild(newRow);
+                });
+
+                // Добавляем кнопку под таблицей
+                ratesTable.parentNode.insertBefore(addButton, ratesTable.nextSibling);
             }
         });
 
