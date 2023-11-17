@@ -156,13 +156,13 @@
                     rates[currentCurrency] = [];
 
                     rate_value_input = row.cells[2].querySelector('input.rate-input');
-                    rate_value = parseFloat(rate_value_input.value);
+                    rate_value = parseFloat(rate_value_input.value).toFixed(1);;
 
                     end_stock = row.cells[3].textContent;
                 } 
                 else {
                     rate_value_input = row.cells[1].querySelector('input.rate-input');
-                    rate_value = parseFloat(rate_value_input.value);
+                    rate_value = parseFloat(rate_value_input.value).toFixed(1);;
                     
                     end_stock = row.cells[2].textContent;
                 }
