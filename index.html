@@ -64,12 +64,6 @@
         <tr id="header">
             <th id="headerText" colspan="4">Заголовок таблицы</th>
         </tr>
-        <tr>
-            <th>Продажа</th>
-            <th></th>
-            <th>Котировки</th>
-            <th>Покупка</th>
-        </tr>
     </table>
 
     <button id="closeButton">Подтвердить</button>
@@ -86,6 +80,18 @@
             const parsedData = JSON.parse(decodeURIComponent(jsonData));
 
             const ratesTable = document.getElementById('rates_table');
+            
+            if (parsedData.edit == 'rates') {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th>Продажа</th>
+                    <th></th>
+                    <th>Котировки</th>
+                    <th>Покупка</th>
+                `;
+                ratesTable.appendChild(row);
+            }
+
             const header = ratesTable.querySelector('#headerText');
             header.textContent = parsedData.city;
 
