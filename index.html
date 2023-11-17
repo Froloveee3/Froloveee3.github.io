@@ -235,44 +235,68 @@
         });
 
         function collectTableData() {
-            const ratesTable = document.getElementById('rates_table');
-            const headerText = ratesTable.querySelector('#headerText').textContent;
-            const data = {
-                city: headerText,
-                rates: {}
-            };
+            const urlParams = new URLSearchParams(window.location.search);
+    
+            const jsonData = urlParams.get('data');
+            const parsedData = JSON.parse(decodeURIComponent(jsonData));
 
-            let currentCurrency = null;
-            let currentRowSpan = 0;
+            if (parsedData.edit == 'rates') {
+                const ratesTable = document.getElementById('rates_table');
+                const headerText = ratesTable.querySelector('#headerText').textContent;
+                const data = {
+                    city: headerText,
+                    rates: {}
+                };
 
-            const rateRows = ratesTable.querySelectorAll('tr.rate-row');
-            console.log(rateRows);
+                let currentCurrency = null;
+                let currentRowSpan = 0;
 
-            rates = {}
+                const rateRows = ratesTable.querySelectorAll('tr.rate-row');
 
-            rateRows.forEach(row => {
-                if (row.cells[0].hasAttribute('rowspan')) {
-                    currentCurrency = row.cells[0].textContent;
-                    rates[currentCurrency] = [];
+                rates = {}
 
-                    rate_value_input = row.cells[2].querySelector('input.rate-input');
-                    rate_value = parseFloat(rate_value_input.value);
+                rateRows.forEach(row => {
+                    if (row.cells[0].hasAttribute('rowspan')) {
+                        currentCurrency = row.cells[0].textContent;
+                        rates[currentCurrency] = [];
 
-                    end_stock = row.cells[3].textContent;
-                } 
-                else {
-                    rate_value_input = row.cells[1].querySelector('input.rate-input');
-                    rate_value = parseFloat(rate_value_input.value);
-                    
-                    end_stock = row.cells[2].textContent;
-                }
+                        rate_value_input = row.cells[2].querySelector('input.rate-input');
+                        rate_value = parseFloat(rate_value_input.value);
 
-                rates[currentCurrency].push([rate_value, end_stock]);
-            });
+                        end_stock = row.cells[3].textContent;
+                    } 
+                    else {
+                        rate_value_input = row.cells[1].querySelector('input.rate-input');
+                        rate_value = parseFloat(rate_value_input.value);
+                        
+                        end_stock = row.cells[2].textContent;
+                    }
 
-            data.rates = rates;
+                    rates[currentCurrency].push([rate_value, end_stock]);
+                });
 
-            return data;
+                data.rates = rates;
+
+                return data;
+            }
+
+            else {
+                const ratesTable = document.getElementById('rates_table');
+                const headerText = ratesTable.querySelector('#headerText').textContent;
+                const data = {
+                    city: headerText,
+                    stocks: []
+                };
+
+                const rateRows = ratesTable.querySelectorAll('tr');
+
+                rateRows.forEach(row => {
+                    stock = row.cells[0].textContent;
+                    data.stocks.push(stock);
+                });
+                
+                return data;
+            }
         }
 
 
