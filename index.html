@@ -129,51 +129,49 @@
 
             const ratesTable = document.getElementById('rates_table');
             const header = ratesTable.querySelector('#headerText');
-            header.textContent = parsedData.city; // Установка заголовка таблицы
-
-            function addRateRow(currency, rate, targetCurrency, isHeader = false) {
-                const row = document.createElement('tr');
-                if (isHeader) {
-                    // Если это первая строка для валюты, устанавливаем rowspan
-                    row.innerHTML = `
-                        <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
-                        <td>=</td>
-                        <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                        <td>${targetCurrency}</td>
-                    `;
-                } else {
-                    // Для последующих строк валюты с rowspan
-                    row.innerHTML = `
-                        <td>=</td>
-                        <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                        <td>${targetCurrency}</td>
-                    `;
-                }
-                ratesTable.appendChild(row);
-            }
+            header.textContent = parsedData.city;
 
             Object.keys(parsedData.rates).forEach(currency => {
+                var firstRow = true;
+
                 parsedData.rates[currency].forEach((rateTuple, index) => {
-                    addRateRow(currency, rateTuple[0], rateTuple[1], index === 0);
+                    const row = document.createElement('tr');
+                    
+                    if (firstRow) {
+                        firstRow = false;
+
+                        row.innerHTML = `
+                            <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
+                            <td>=</td>
+                            <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                            <td>${rateTuple[1]}</td>
+                        `;
+                    } else {
+                        row.innerHTML = `
+                            <td>=</td>
+                            <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                            <td>${rateTuple[1]}</td>
+                        `;
+                    }
+                    
+                    ratesTable.appendChild(row);
                 });
             });
 
             function updateButtonState() {
                 const inputs = document.querySelectorAll('.rate-input');
                 const button = document.getElementById('closeButton');
-                // Проверяем, что все поля ввода заполнены
+
                 const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
                 button.disabled = !allFilled;
             }
 
-            // Добавление обработчиков событий на поля ввода
             const rateInputs = document.querySelectorAll('.rate-input');
+
             rateInputs.forEach(input => {
-                // Проверяем состояние кнопки при каждом изменении в поле ввода
                 input.addEventListener('input', updateButtonState);
             });
 
-            // Первоначальное обновление состояния кнопки
             updateButtonState();
         });
 
