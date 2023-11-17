@@ -70,6 +70,48 @@
             <th>Котировки</th>
             <th>Покупка</th>
         </tr>
+        <tr>
+            <td rowspan="4">EUR</td>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td rowspan="4">USD</td>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
+            <td>USD</td>
+        </tr>
     </table>
 
     <button id="closeButton">Подтвердить</button>
@@ -141,28 +183,30 @@
 
         function collectTableData() {
             const ratesTable = document.getElementById('rates_table');
-            const rows = ratesTable.querySelectorAll('tr:not(#header)');
+            // Пропускаем первые две строки - заголовок таблицы и шапку столбцов
+            const rows = ratesTable.querySelectorAll('tr:not(:first-child):not(:nth-child(2))');
             const data = {
-                city: 'Стамбул',
+                city: 'Стамбул', // Значение по умолчанию, можете изменить на актуальное, если оно передается динамически
                 rates: {}
             };
 
-            rows.forEach((row, index) => {
-                const cells = row.querySelectorAll('td');
-                let currency = cells[0].textContent;
-                const rate = cells[1].querySelector('input').value;
-                const targetCurrency = cells[2].textContent;
+            let currentCurrency = null; // Переменная для хранения текущей валюты
 
-                // Проверка на наличие названия валюты в первой ячейке (исключаем строку заголовков)
-                if (index === 0 || currency) {
-                    currency = currency || rows[index - 1].querySelector('td').textContent; // Если валюта не указана, берем значение из предыдущей строки
-                    if (!data.rates[currency]) {
-                        data.rates[currency] = [];
-                    }
+            rows.forEach(row => {
+                // Определение, есть ли объединенная ячейка с валютой в этой строке
+                const currencyCell = row.cells[0].hasAttribute('rowspan') ? row.cells[0] : null;
+                if (currencyCell) {
+                    currentCurrency = currencyCell.textContent; // Обновление текущей валюты
+                    data.rates[currentCurrency] = []; // Инициализация массива для новой валюты
                 }
 
-                if (rate && targetCurrency) { // Убедимся, что данные существуют
-                    data.rates[currency].push([parseFloat(rate), targetCurrency]);
+                // Предполагаем, что структура остальных ячеек остается постоянной
+                const rateValue = row.querySelector('input.rate-input').value;
+                const targetCurrency = row.cells[row.cells.length - 1].textContent;
+
+                // Добавление информации о курсе валют в data
+                if (currentCurrency && rateValue && targetCurrency) {
+                    data.rates[currentCurrency].push([parseFloat(rateValue), targetCurrency]);
                 }
             });
 
@@ -172,6 +216,9 @@
         document.getElementById('closeButton').addEventListener('click', function() {
             const data = collectTableData();
             const dataString = JSON.stringify(data);
+
+            console.log(data);
+            console.log(dataString);
 
             // Создаём объект для отправки с типом 'article'
             const result = {
