@@ -186,25 +186,38 @@
             // Пропускаем первые две строки - заголовок таблицы и шапку столбцов
             const rows = ratesTable.querySelectorAll('tr:not(:first-child):not(:nth-child(2))');
             const data = {
-                city: 'Стамбул', // Значение по умолчанию, можете изменить на актуальное, если оно передается динамически
+                city: 'Стамбул',
                 rates: {}
             };
 
-            let currentCurrency = null; // Переменная для хранения текущей валюты
+            let currentCurrency = null;
+            let currentRowSpan = 0;
 
-            rows.forEach(row => {
-                // Определение, есть ли объединенная ячейка с валютой в этой строке
-                const currencyCell = row.cells[0].hasAttribute('rowspan') ? row.cells[0] : null;
-                if (currencyCell) {
-                    currentCurrency = currencyCell.textContent; // Обновление текущей валюты
-                    data.rates[currentCurrency] = []; // Инициализация массива для новой валюты
+            rows.forEach((row, index) => {
+                // Если текущий rowspan больше 0, мы продолжаем использовать текущую валюту
+                if (currentRowSpan > 0) {
+                    currentRowSpan--;
                 }
 
-                // Предполагаем, что структура остальных ячеек остается постоянной
-                const rateValue = row.querySelector('input.rate-input').value;
-                const targetCurrency = row.cells[row.cells.length - 1].textContent;
+                // Проверяем, есть ли в строке объединенная ячейка с валютой
+                if (row.cells[0].hasAttribute('rowspan')) {
+                    currentCurrency = row.cells[0].textContent;
+                    currentRowSpan = parseInt(row.cells[0].getAttribute('rowspan'), 10) - 1;
+                    data.rates[currentCurrency] = [];
+                }
 
-                // Добавление информации о курсе валют в data
+                // Если currentRowSpan равен 0 и нет ячейки с валютой, значит, мы пропустили объединенную ячейку
+                // Это может случиться, если первая строка с данными не содержит ячейку с валютой
+                if (currentRowSpan === 0 && !row.cells[0].hasAttribute('rowspan')) {
+                    // Это значит, что currentCurrency уже была установлена в предыдущих итерациях
+                    // Нет необходимости её сбрасывать
+                }
+
+                const cells = row.querySelectorAll('td');
+                const rateInput = cells[1].querySelector('input');
+                const rateValue = rateInput ? rateInput.value : null;
+                const targetCurrency = cells[2].textContent;
+
                 if (currentCurrency && rateValue && targetCurrency) {
                     data.rates[currentCurrency].push([parseFloat(rateValue), targetCurrency]);
                 }
