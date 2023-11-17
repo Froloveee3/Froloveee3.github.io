@@ -55,6 +55,17 @@
             cursor: pointer;
             font-size: 16px;
         }
+        .delete-btn {
+            padding: 6px 12px; /* Небольшое заполнение для кнопки в таблице */
+            background-color: #d9534f; /* Красный цвет для обозначения удаления */
+            color: white; /* Белый текст для контраста */
+            border: none;
+            border-radius: 4px; /* Скругленные углы для кнопки */
+            cursor: pointer; /* Курсор в виде руки при наведении на кнопку */
+            font-size: 14px; /* Размер шрифта соответствует вашим ячейкам таблицы */
+            vertical-align: middle; /* Выравнивание по середине относительно ячеек таблицы */
+            margin-left: 10px; /* Небольшой отступ слева от текста в ячейке */
+        }
     </style>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -96,6 +107,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <th>Валюта</th>
+                    <th>Удалить</th>
                 `;
                 ratesTable.appendChild(row);
             }
