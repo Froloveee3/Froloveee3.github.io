@@ -70,44 +70,44 @@
             <th>Котировки</th>
             <th>Покупка</th>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td rowspan="4">EUR</td>
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td rowspan="4">USD</td>
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
         </tr>
-        <tr>
+        <tr class="rate-row">
             <td>=</td>
             <td><input type="number" value="100" step="0.01" required class="rate-input" style="width: 100%;"></td>
             <td>USD</td>
@@ -135,7 +135,7 @@
                 var firstRow = true;
 
                 parsedData.rates[currency].forEach((rateTuple, index) => {
-                    const row = document.createElement('tr');
+                    const row = document.createElement('tr.rate-row');
                     
                     if (firstRow) {
                         firstRow = false;
@@ -179,43 +179,39 @@
             const ratesTable = document.getElementById('rates_table');
             const headerText = ratesTable.querySelector('#headerText').textContent;
             const data = {
-                city: headerText, // Используем текст из заголовка таблицы для города
+                city: headerText,
                 rates: {}
             };
 
-            // Инициализируем переменные для отслеживания текущей валюты и rowspan
             let currentCurrency = null;
             let currentRowSpan = 0;
 
-            // Проходим через все строки таблицы, исключая заголовок и шапку
-            const rateRows = ratesTable.querySelectorAll('tr:not(:first-child):not(:nth-child(2))');
+            const rateRows = ratesTable.querySelectorAll('tr.rate-row');
+            console.log(rateRows);
+
+            rates = {}
 
             rateRows.forEach(row => {
-                // Проверяем, закончился ли текущий rowspan
-                if (currentRowSpan === 0) {
-                    const currencyCell = row.cells[0];
-                    if (currencyCell && currencyCell.hasAttribute('rowspan')) {
-                        currentCurrency = currencyCell.textContent; // Обновляем текущую валюту
-                        currentRowSpan = parseInt(currencyCell.getAttribute('rowspan'), 10);
-                    }
-                } else {
-                    // Уменьшаем счетчик текущего rowspan
-                    currentRowSpan--;
+                if (row.cells[0].hasAttribute('rowspan')) {
+                    currentCurrency = row.cells[0].textContent;
+                    rates[currentCurrency] = [];
+
+                    rate_value_input = row.cells[2].querySelector('input.rate-input');
+                    rate_value = parseFloat(rate_value_input.value);
+
+                    end_stock = row.cells[3].textContent;
+                } 
+                else {
+                    rate_value_input = row.cells[1].querySelector('input.rate-input');
+                    rate_value = parseFloat(rate_value_input.value);
+                    
+                    end_stock = row.cells[2].textContent;
                 }
 
-                // Собираем данные о курсе из текущей строки
-                const rateInput = row.querySelector('input.rate-input');
-                const rateValue = rateInput ? parseFloat(rateInput.value) : null;
-                const targetCurrency = rateInput ? row.cells[row.cells.length - 1].textContent : null;
-
-                // Если есть данные для сбора, добавляем их в объект data
-                if (currentCurrency && rateValue !== null && targetCurrency) {
-                    if (!data.rates[currentCurrency]) {
-                        data.rates[currentCurrency] = [];
-                    }
-                    data.rates[currentCurrency].push([rateValue, targetCurrency]);
-                }
+                rates[currentCurrency].push([rate_value, end_stock]);
             });
+
+            data.rates = rates;
 
             return data;
         }
