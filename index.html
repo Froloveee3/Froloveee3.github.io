@@ -175,6 +175,7 @@
             else if (parsedData.edit == 'stocks') {
                 parsedData.rates.forEach(currency => {
                     const row = document.createElement('tr');
+                    row.className = 'rate-row';
                     
                     row.innerHTML = `
                         <td contenteditable="true">${currency}</td>
@@ -288,7 +289,7 @@
                     stocks: []
                 };
 
-                const rateRows = ratesTable.querySelectorAll('tr');
+                const rateRows = ratesTable.querySelectorAll('tr.rate-row');
 
                 rateRows.forEach(row => {
                     stock = row.cells[0].textContent;
