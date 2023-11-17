@@ -123,43 +123,39 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+    
             const jsonData = urlParams.get('data');
-            const data = JSON.parse(decodeURIComponent(jsonData));
+            const parsedData = JSON.parse(decodeURIComponent(jsonData));
 
             const ratesTable = document.getElementById('rates_table');
-            const city = data.city;
-            const rates = data.rates;
+            const header = ratesTable.querySelector('#headerText');
+            header.textContent = parsedData.city; // Установка заголовка таблицы
 
-            const header = ratesTable.querySelector('#header th');
-            header.textContent = city;
-
-            function addRateRow(currency, rate, targetCurrency) {
+            function addRateRow(currency, rate, targetCurrency, isHeader = false) {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>=</td>
-                    <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                    <td>${targetCurrency}</td>
-                `;
+                if (isHeader) {
+                    // Если это первая строка для валюты, устанавливаем rowspan
+                    row.innerHTML = `
+                        <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
+                        <td>=</td>
+                        <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                        <td>${targetCurrency}</td>
+                    `;
+                } else {
+                    // Для последующих строк валюты с rowspan
+                    row.innerHTML = `
+                        <td>=</td>
+                        <td><input type="number" value="${rate}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                        <td>${targetCurrency}</td>
+                    `;
+                }
                 ratesTable.appendChild(row);
             }
 
-            Object.keys(rates).forEach(currency => {
-                const currencyRates = rates[currency];
-                const firstRate = currencyRates[0];
-                const firstRow = document.createElement('tr');
-
-                firstRow.innerHTML = `
-                    <td rowspan="${currencyRates.length}">${currency}</td>
-                    <td>=</td>
-                    <td><input type="number" value="${firstRate[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                    <td>${firstRate[1]}</td>
-                `;
-                ratesTable.appendChild(firstRow);
-
-                for (let i = 1; i < currencyRates.length; i++) {
-                    addRateRow(currency, currencyRates[i][0], currencyRates[i][1]);
-                }
+            Object.keys(parsedData.rates).forEach(currency => {
+                parsedData.rates[currency].forEach((rateTuple, index) => {
+                    addRateRow(currency, rateTuple[0], rateTuple[1], index === 0);
+                });
             });
 
             function updateButtonState() {
