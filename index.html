@@ -150,7 +150,7 @@
             }
 
             else if (parsedData.edit == 'stocks') {
-                Object.keys(parsedData.rates).forEach(currency => {
+                parsedData.rates.forEach(currency => {
                     const row = document.createElement('tr');
                     
                     row.innerHTML = `
