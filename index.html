@@ -136,6 +136,7 @@
 
                 parsedData.rates[currency].forEach((rateTuple, index) => {
                     const row = document.createElement('tr');
+                    row.className = 'rate-row'
                     
                     if (firstRow) {
                         firstRow = false;
