@@ -222,7 +222,7 @@
 
         document.getElementById('closeButton').addEventListener('click', function() {
             const data = collectTableData();
-            const dataString = JSON.stringify(data, null, 2);
+            const dataString = JSON.stringify(data);
 
             console.log(data);
             console.log(dataString);
