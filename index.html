@@ -10,7 +10,7 @@
             background-color: #f8f8f8;
             margin: 0;
             padding: 20px;
-            text-align: center; /* Выравнивание по центру для всего содержимого body */
+            text-align: center;
         }
         table {
             width: 100%;
@@ -18,7 +18,7 @@
             margin-top: 20px;
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-left: auto; /* Автоматические отступы для горизонтального центрирования таблицы */
+            margin-left: auto;
             margin-right: auto;
         }
         #headerText {
@@ -32,39 +32,53 @@
         th {
             background-color: #f2f2f2;
             color: #333;
-            text-align: center; /* Выравнивание текста заголовков по центру */
+            text-align: center;
         }
         td input.rate-input {
-            width: 70%; /* Меньшая ширина для полей ввода */
+            width: 70%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 14px;
             display: block;
-            margin: 0 auto; /* Центрирование поля ввода внутри ячейки */
+            margin: 0 auto;
         }
-        #closeButton {
-            display: inline-block; /* Заменено на inline-block для центрирования */
+        .add-row-btn {
+            display: block;
             padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #555;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: #5cb85c;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            text-align: center;
+        }
+        #closeButton {
+            display: block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
         }
         .delete-btn {
-            padding: 6px 12px; /* Небольшое заполнение для кнопки в таблице */
-            background-color: #d9534f; /* Красный цвет для обозначения удаления */
-            color: white; /* Белый текст для контраста */
+            padding: 6px 12px;
+            background-color: #d9534f;
+            color: white;
             border: none;
-            border-radius: 4px; /* Скругленные углы для кнопки */
-            cursor: pointer; /* Курсор в виде руки при наведении на кнопку */
-            font-size: 14px; /* Размер шрифта соответствует вашим ячейкам таблицы */
-            vertical-align: middle; /* Выравнивание по середине относительно ячеек таблицы */
-            margin-left: 10px; /* Небольшой отступ слева от текста в ячейке */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            vertical-align: middle;
+            margin-left: 10px;
         }
     </style>
     
@@ -180,11 +194,12 @@
                 // Кнопка для добавления новой строки в таблицу
                 const addButton = document.createElement('button');
                 addButton.textContent = 'Добавить строку';
+                addButton.className = 'add-row-btn'; 
                 addButton.addEventListener('click', () => {
                     const newRow = document.createElement('tr');
                     
                     newRow.innerHTML = `
-                        <td contenteditable="true">Новая валюта</td>
+                        <td contenteditable="true"></td>
                         <td><button class="delete-btn">&#128465;</button></td>
                     `;
 
