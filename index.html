@@ -150,7 +150,15 @@
             }
 
             else if (parsedData.edit == 'stocks') {
-                
+                Object.keys(parsedData.rates).forEach(currency => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${currency}</td>
+                    `;
+
+                    ratesTable.appendChild(row);
+                });
             }
         });
 
