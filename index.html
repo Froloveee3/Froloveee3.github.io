@@ -92,52 +92,66 @@
                 ratesTable.appendChild(row);
             }
 
+            else if (parsedData.edit == 'stocks') {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th>Валюта</th>
+                `;
+                ratesTable.appendChild(row);
+            }
+
             const header = ratesTable.querySelector('#headerText');
             header.textContent = parsedData.city;
 
-            Object.keys(parsedData.rates).forEach(currency => {
-                var firstRow = true;
+            if (parsedData.edit == 'rates') {
+                Object.keys(parsedData.rates).forEach(currency => {
+                    var firstRow = true;
 
-                parsedData.rates[currency].forEach((rateTuple, index) => {
-                    const row = document.createElement('tr');
-                    row.className = 'rate-row'
-                    
-                    if (firstRow) {
-                        firstRow = false;
+                    parsedData.rates[currency].forEach((rateTuple, index) => {
+                        const row = document.createElement('tr');
+                        row.className = 'rate-row'
+                        
+                        if (firstRow) {
+                            firstRow = false;
 
-                        row.innerHTML = `
-                            <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
-                            <td>=</td>
-                            <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                            <td>${rateTuple[1]}</td>
-                        `;
-                    } else {
-                        row.innerHTML = `
-                            <td>=</td>
-                            <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
-                            <td>${rateTuple[1]}</td>
-                        `;
-                    }
-                    
-                    ratesTable.appendChild(row);
+                            row.innerHTML = `
+                                <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
+                                <td>=</td>
+                                <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                                <td>${rateTuple[1]}</td>
+                            `;
+                        } else {
+                            row.innerHTML = `
+                                <td>=</td>
+                                <td><input type="number" value="${rateTuple[0]}" step="0.01" required class="rate-input" style="width: 100%;"></td>
+                                <td>${rateTuple[1]}</td>
+                            `;
+                        }
+                        
+                        ratesTable.appendChild(row);
+                    });
                 });
-            });
 
-            function updateButtonState() {
-                const inputs = document.querySelectorAll('.rate-input');
-                const button = document.getElementById('closeButton');
+                function updateButtonState() {
+                    const inputs = document.querySelectorAll('.rate-input');
+                    const button = document.getElementById('closeButton');
 
-                const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-                button.disabled = !allFilled;
+                    const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+                    button.disabled = !allFilled;
+                }
+
+                const rateInputs = document.querySelectorAll('.rate-input');
+
+                rateInputs.forEach(input => {
+                    input.addEventListener('input', updateButtonState);
+                });
+
+                updateButtonState();
             }
 
-            const rateInputs = document.querySelectorAll('.rate-input');
-
-            rateInputs.forEach(input => {
-                input.addEventListener('input', updateButtonState);
-            });
-
-            updateButtonState();
+            else if (parsedData.edit == 'stocks') {
+                
+            }
         });
 
         function collectTableData() {
