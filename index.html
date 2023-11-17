@@ -177,12 +177,12 @@
 
                     row.querySelector('.delete-btn').addEventListener('click', function() {
                         this.closest('tr').remove();
+                        updateCloseButtonState();
                     });
 
                     ratesTable.appendChild(row);
                 });
 
-                // Кнопка для добавления новой строки в таблицу
                 const addButton = document.createElement('button');
                 addButton.textContent = 'Добавить строку';
                 addButton.className = 'add-row-btn'; 
@@ -196,14 +196,36 @@
 
                     newRow.querySelector('.delete-btn').addEventListener('click', function() {
                         this.closest('tr').remove();
+                        updateCloseButtonState();
                     });
 
                     ratesTable.appendChild(newRow);
+                    updateCloseButtonState();
                 });
 
-                // Добавляем кнопку под таблицей
                 ratesTable.parentNode.insertBefore(addButton, ratesTable.nextSibling);
+
+                function updateCloseButtonState() {
+                    const allCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
+                    let allFilled = true;
+                    
+                    allCells.forEach(cell => {
+                        if (cell.textContent.trim() === '') {
+                            allFilled = false;
+                        }
+                    });
+                    
+                    const closeButton = document.getElementById('closeButton');
+                    if (closeButton) {
+                        closeButton.disabled = !allFilled;
+                    }
+                }
+
+                ratesTable.addEventListener('input', updateCloseButtonState);
+
+                updateCloseButtonState();
             }
+
         });
 
         function collectTableData() {
