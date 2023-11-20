@@ -107,6 +107,17 @@
             //     });
             // });
 
+            // Функция для скрытия клавиатуры
+            function hideKeyboard() {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+            }
+
+            // Обработчик событий для скрытия клавиатуры при прокрутке
+            window.addEventListener('scroll', hideKeyboard);
+
+
             const urlParams = new URLSearchParams(window.location.search);
     
             const jsonData = urlParams.get('data');
@@ -244,7 +255,15 @@
 
                 updateCloseButtonState();
             }
+            
 
+            // Обработчик событий для редактируемых ячеек
+            ratesTable.addEventListener('input', function(event) {
+                if (event.target.contentEditable === 'true') {
+                    // Добавляем обработчик события blur для каждой редактируемой ячейки
+                    event.target.addEventListener('blur', hideKeyboard);
+                }
+            });
         });
 
         function collectTableData() {
