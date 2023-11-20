@@ -96,6 +96,17 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('scroll', function() {
+                document.activeElement.blur();
+            });
+
+            const editableCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
+            editableCells.forEach(cell => {
+                cell.addEventListener('blur', function() {
+                    cell.blur();
+                });
+            });
+
             const urlParams = new URLSearchParams(window.location.search);
     
             const jsonData = urlParams.get('data');
