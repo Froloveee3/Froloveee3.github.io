@@ -96,69 +96,45 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // window.addEventListener('scroll', function() {
-            //     document.activeElement.blur();
-            // });
-
-            // const editableCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
-            // editableCells.forEach(cell => {
-            //     cell.addEventListener('blur', function() {
-            //         cell.blur();
-            //     });
-            // });
-
-            // Функция для скрытия клавиатуры
             function hideKeyboard() {
                 if (document.activeElement) {
                     document.activeElement.blur();
                 }
             }
 
-            // Обработчик событий для скрытия клавиатуры при прокрутке
             window.addEventListener('scroll', hideKeyboard);
 
-
             const urlParams = new URLSearchParams(window.location.search);
-    
             const jsonData = urlParams.get('data');
             const parsedData = JSON.parse(decodeURIComponent(jsonData));
 
             const ratesTable = document.getElementById('rates_table');
-            
+
+            ratesTable.addEventListener('blur', function(event) {
+                if (event.target.contentEditable === 'true' || event.target.classList.contains('rate-input')) {
+                    hideKeyboard();
+                }
+            }, true); // Используем capture phase для события blur
+
             if (parsedData.edit == 'rates') {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = `
                     <th>Продажа</th>
                     <th></th>
                     <th>Котировки</th>
                     <th>Покупка</th>
                 `;
-                ratesTable.appendChild(row);
-            }
+                ratesTable.appendChild(headerRow);
 
-            else if (parsedData.edit == 'stocks') {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <th>Валюта</th>
-                    <th>Удалить</th>
-                `;
-                ratesTable.appendChild(row);
-            }
-
-            const header = ratesTable.querySelector('#headerText');
-            header.textContent = parsedData.city;
-
-            if (parsedData.edit == 'rates') {
                 Object.keys(parsedData.rates).forEach(currency => {
                     var firstRow = true;
 
                     parsedData.rates[currency].forEach((rateTuple, index) => {
                         const row = document.createElement('tr');
-                        row.className = 'rate-row'
+                        row.className = 'rate-row';
                         
                         if (firstRow) {
                             firstRow = false;
-
                             row.innerHTML = `
                                 <td rowspan="${parsedData.rates[currency].length}">${currency}</td>
                                 <td>=</td>
@@ -176,25 +152,14 @@
                         ratesTable.appendChild(row);
                     });
                 });
+            } else if (parsedData.edit == 'stocks') {
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = `
+                    <th>Валюта</th>
+                    <th>Удалить</th>
+                `;
+                ratesTable.appendChild(headerRow);
 
-                function updateButtonState() {
-                    const inputs = document.querySelectorAll('.rate-input');
-                    const button = document.getElementById('closeButton');
-
-                    const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-                    button.disabled = !allFilled;
-                }
-
-                const rateInputs = document.querySelectorAll('.rate-input');
-
-                rateInputs.forEach(input => {
-                    input.addEventListener('input', updateButtonState);
-                });
-
-                updateButtonState();
-            }
-
-            else if (parsedData.edit == 'stocks') {
                 parsedData.rates.forEach(currency => {
                     const row = document.createElement('tr');
                     row.className = 'rate-row';
@@ -211,60 +176,48 @@
 
                     ratesTable.appendChild(row);
                 });
-
-                const addButton = document.createElement('button');
-                addButton.textContent = 'Добавить строку';
-                addButton.className = 'add-row-btn'; 
-                addButton.addEventListener('click', () => {
-                    const newRow = document.createElement('tr');
-                    newRow.className = 'rate-row';
-                    
-                    newRow.innerHTML = `
-                        <td contenteditable="true"></td>
-                        <td><button class="delete-btn">&#128465;</button></td>
-                    `;
-
-                    newRow.querySelector('.delete-btn').addEventListener('click', function() {
-                        this.closest('tr').remove();
-                        updateCloseButtonState();
-                    });
-
-                    ratesTable.appendChild(newRow);
-                    updateCloseButtonState();
-                });
-
-                ratesTable.parentNode.insertBefore(addButton, ratesTable.nextSibling);
-
-                function updateCloseButtonState() {
-                    const allCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
-                    let allFilled = true;
-                    
-                    allCells.forEach(cell => {
-                        if (cell.textContent.trim() === '') {
-                            allFilled = false;
-                        }
-                    });
-                    
-                    const closeButton = document.getElementById('closeButton');
-                    if (closeButton) {
-                        closeButton.disabled = !allFilled;
-                    }
-                }
-
-                ratesTable.addEventListener('input', updateCloseButtonState);
-
-                updateCloseButtonState();
             }
-            
 
-            // Обработчик событий для редактируемых ячеек
+            function updateButtonState() {
+                const inputs = document.querySelectorAll('.rate-input');
+                const button = document.getElementById('closeButton');
+                const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+                button.disabled = !allFilled;
+            }
+
+            const rateInputs = document.querySelectorAll('.rate-input');
+            rateInputs.forEach(input => {
+                input.addEventListener('input', updateButtonState);
+                input.addEventListener('blur', hideKeyboard); // Добавляем событие blur здесь
+            });
+
+            function updateCloseButtonState() {
+                const allCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
+                let allFilled = true;
+                
+                allCells.forEach(cell => {
+                    if (cell.textContent.trim() === '') {
+                        allFilled = false;
+                    }
+                });
+                
+                const closeButton = document.getElementById('closeButton');
+                closeButton.disabled = !allFilled;
+            }
+
             ratesTable.addEventListener('input', function(event) {
                 if (event.target.contentEditable === 'true') {
-                    // Добавляем обработчик события blur для каждой редактируемой ячейки
-                    event.target.addEventListener('blur', hideKeyboard);
+                    updateCloseButtonState();
                 }
             });
+
+            updateButtonState();
+            updateCloseButtonState();
+
+            // Обработчик событий для кнопки "Добавить строку", если применимо
+            // Обработчик событий для кнопки "Закрыть"
         });
+
 
         function collectTableData() {
             const urlParams = new URLSearchParams(window.location.search);
