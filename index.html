@@ -9,25 +9,25 @@
             color: #333;
             background-color: #f8f8f8;
             margin: 0;
-            padding: 20px;
+            padding: 1.25rem;
             text-align: center;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 1.25rem;
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
             margin-left: auto;
             margin-right: auto;
         }
         #headerText {
-            font-size: 20px;
+            font-size: 1.25rem;
         }
         th, td {
-            padding: 12px 15px;
+            padding: 0.75rem 0.9375rem;
             border: 1px solid #ddd;
-            font-size: 14px;
+            font-size: 0.875rem;
         }
         th {
             background-color: #f2f2f2;
@@ -36,24 +36,24 @@
         }
         td input.rate-input {
             width: 70%;
-            padding: 8px;
+            padding: 0.5rem;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 0.25rem;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 0.875rem;
             display: block;
             margin: 0 auto;
         }
         .add-row-btn, #closeButton {
             display: block;
-            padding: 10px 20px;
-            margin: 10px auto;
+            padding: 0.625rem 1.25rem;
+            margin: 0.625rem auto;
             background-color: #5cb85c;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 0.25rem;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             text-align: center;
             width: fit-content;
         }
@@ -67,15 +67,15 @@
             opacity: 0.5;
         }
         .delete-btn {
-            padding: 6px 12px;
+            padding: 0.375rem 0.75rem;
             background-color: #d9534f;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 0.25rem;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 0.875rem;
             vertical-align: middle;
-            margin-left: 10px;
+            margin-left: 0.625rem;
         }
     </style>
     
@@ -114,7 +114,7 @@
                 if (event.target.contentEditable === 'true' || event.target.classList.contains('rate-input')) {
                     hideKeyboard();
                 }
-            }, true); // Используем capture phase для события blur
+            }, true);
 
             if (parsedData.edit == 'rates') {
                 const headerRow = document.createElement('tr');
@@ -213,9 +213,6 @@
 
             updateButtonState();
             updateCloseButtonState();
-
-            // Обработчик событий для кнопки "Добавить строку", если применимо
-            // Обработчик событий для кнопки "Закрыть"
         });
 
 
