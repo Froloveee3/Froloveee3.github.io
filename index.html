@@ -220,7 +220,7 @@
                     updateCloseButtonState();
                 });
 
-                ratesTable.parentNode.insertBefore(addButton, ratesTable.nextSibling);
+                ratesTable.parentNode.insertBefore(addButton, document.body.firstChild);
 
                 function updateCloseButtonState() {
                     const allCells = ratesTable.querySelectorAll('td[contenteditable="true"]');
