@@ -87,13 +87,15 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+    <button id="closeButton">Подтвердить</button>
+
+
     <table id="rates_table">
         <tr id="header">
             <th id="headerText" colspan="4">Заголовок таблицы</th>
         </tr>
     </table>
 
-    <button id="closeButton">Подтвердить</button>
 
     <div id="spacer"></div>
 
@@ -103,13 +105,13 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            function hideKeyboard() {
-                if (document.activeElement) {
-                    document.activeElement.blur();
-                }
-            }
+            // function hideKeyboard() {
+            //     if (document.activeElement) {
+            //         document.activeElement.blur();
+            //     }
+            // }
 
-            window.addEventListener('scroll', hideKeyboard);
+            // window.addEventListener('scroll', hideKeyboard);
 
             const urlParams = new URLSearchParams(window.location.search);
             const jsonData = urlParams.get('data');
@@ -117,11 +119,11 @@
 
             const ratesTable = document.getElementById('rates_table');
 
-            ratesTable.addEventListener('blur', function(event) {
-                if (event.target.contentEditable === 'true' || event.target.classList.contains('rate-input')) {
-                    hideKeyboard();
-                }
-            }, true);
+            // ratesTable.addEventListener('blur', function(event) {
+            //     if (event.target.contentEditable === 'true' || event.target.classList.contains('rate-input')) {
+            //         hideKeyboard();
+            //     }
+            // }, true);
 
             if (parsedData.edit == 'rates') {
                 const headerRow = document.createElement('tr');
@@ -195,7 +197,7 @@
             const rateInputs = document.querySelectorAll('.rate-input');
             rateInputs.forEach(input => {
                 input.addEventListener('input', updateButtonState);
-                input.addEventListener('blur', hideKeyboard); // Добавляем событие blur здесь
+                // input.addEventListener('blur', hideKeyboard); // Добавляем событие blur здесь
             });
 
             function updateCloseButtonState() {
